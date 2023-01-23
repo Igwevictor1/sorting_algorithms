@@ -1,50 +1,49 @@
 #include "sort.h"
-#include <stdlib.h>
 
 /**
- * counting_sort - sorts an array of integers in ascending order
- * using the Counting sort algorithm
- * @array: Array to be sorted
- * @size: size of the array
- *
- * Return: void
- */
+* counting_sort - counting sort algorithm
+* @array: array to be sorted
+* @size: size of the array to be sorted
+*/
 void counting_sort(int *array, size_t size)
 {
-	int *count_arr, k;
-	size_t i, j, arr_size;
+	int i, max;
+	int *count = NULL, *copy = NULL;
+	size_t j, temp, total = 0;
 
-	if (array == NULL || size <= 1)
+	if (array == NULL || size < 2)
 		return;
-	arr_size = array[0];
-	for (i = 0; array[i]; i++)
+	copy = malloc(sizeof(int) * size);
+	if (copy == NULL)
+		return;
+	for (j = 0, max = 0; j < size; j++)
 	{
-		if (array[i] > (int)arr_size)
-			arr_size = array[i];
+		copy[j] = array[j];
+		if (array[j] > max)
+			max = array[j];
 	}
-
-	arr_size += 1;
-
-	count_arr = malloc(arr_size * sizeof(int *));
-	if (count_arr == NULL)
+	count = malloc(sizeof(int) * (max + 1));
+	if (count == NULL)
+	{
+		free(copy);
 		return;
-
-	for (i = 0; i < arr_size; i++)
-		count_arr[i] = 0;
-
-	for (i = 0; i < size; i++)
-		count_arr[array[i]] += 1;
-
-	for (i = 0; i <= arr_size; i++)
-		count_arr[i] += count_arr[i - 1];
-
-	print_array(count_arr, arr_size);
-
-	for (i = 1, j = 0; i <= arr_size; i++)
-		if (count_arr[i] != count_arr[i - 1])
-		{
-			for (k = 0; k < count_arr[i] - count_arr[i - 1]; k++)
-				array[j++] = i;
-		}
-	free(count_arr);
+	}
+	for (i = 0; i <= max; i++)
+		count[i] = 0;
+	for (j = 0; j < size; j++)
+		count[array[j]] += 1;
+	for (i = 0; i <= max; i++)
+	{
+		temp = count[i];
+		count[i] = total;
+		total += temp;
+	}
+	for (j = 0; j < size; j++)
+	{
+		array[count[copy[j]]] = copy[j];
+		count[copy[j]] += 1;
+	}
+	print_array(count, max + 1);
+	free(count);
+	free(copy);
 }

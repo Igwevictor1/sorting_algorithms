@@ -1,12 +1,12 @@
 #ifndef DECK_H
 #define DECK_H
-
+/*Structs*/
 /**
- * enum kind_e - card kind
- * @SPADE: spade kind
- * @HEART: heart kind
- * @CLUB: club kind
- * @DIAMOND: diamond kind
+ * enum kind_e - Card suit
+ * @SPADE: spade suit
+ * @HEART: heart suit
+ * @CLUB: club suit
+ * @DIAMOND: diamond suit
  */
 typedef enum kind_e
 {
@@ -42,6 +42,6 @@ typedef struct deck_node_s
 	struct deck_node_s *prev;
 	struct deck_node_s *next;
 } deck_node_t;
-
+/*Prototypes*/
 void sort_deck(deck_node_t **deck);
 #endif
